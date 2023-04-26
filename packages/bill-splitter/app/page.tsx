@@ -5,40 +5,40 @@ import styles from './page.module.css'
 import { useEffect } from 'react'
 
 export default function Home() {
-  useEffect(() => {
-    const imagePath = "/invoice.jpg"; // relative URL path to the image in the public folder
+  // useEffect(() => {
+  //   const imagePath = "/invoice.jpg"; // relative URL path to the image in the public folder
 
-    // Use the imagePath to load the image file
-    const image = new Image();
-    image.src = imagePath;
+  //   // Use the imagePath to load the image file
+  //   const image = new Image();
+  //   image.src = imagePath;
 
-    // Do something with the image after it has loaded
-    image.onload = () => {
-      console.log("Image loaded successfully");
+  //   // Do something with the image after it has loaded
+  //   image.onload = () => {
+  //     console.log("Image loaded successfully");
 
-      // Convert the image data to base64-encoded format
-      const canvas = document.createElement("canvas");
-      canvas.width = image.width;
-      canvas.height = image.height;
-      const context = canvas.getContext("2d");
-      context!.drawImage(image, 0, 0);
-      const imageData = canvas.toDataURL("image/jpeg").replace(/^data:image\/(png|jpeg);base64,/, "");
-      console.log('imageData', imageData)
+  //     // Convert the image data to base64-encoded format
+  //     const canvas = document.createElement("canvas");
+  //     canvas.width = image.width;
+  //     canvas.height = image.height;
+  //     const context = canvas.getContext("2d");
+  //     context!.drawImage(image, 0, 0);
+  //     const imageData = canvas.toDataURL("image/jpeg").replace(/^data:image\/(png|jpeg);base64,/, "");
+  //     console.log('imageData', imageData)
 
-      // Send the image data to the API
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-      const requestBody = { image: imageData };
-      console.log('process.env.API_URL', process.env.NEXT_PUBLIC_API_URL)
-      fetch(apiUrl!, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(requestBody),
-      })
-        .then((response) => response.json())
-        .then((data) => console.log(data))
-        .catch((error) => console.error(error));
-    };
-  }, []);
+  //     // Send the image data to the API
+  //     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  //     const requestBody = { image: imageData };
+  //     console.log('process.env.API_URL', process.env.NEXT_PUBLIC_API_URL)
+  //     fetch(apiUrl!, {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify(requestBody),
+  //     })
+  //       .then((response) => response.json())
+  //       .then((data) => console.log(data))
+  //       .catch((error) => console.error(error));
+  //   };
+  // }, []);
   // useEffect(() => {
   //   console.log('Hello from the client!')
   //   console.log('process.env.API_URL', process.env.NEXT_PUBLIC_API_URL)

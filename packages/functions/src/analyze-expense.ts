@@ -3,6 +3,8 @@ import {
   AnalyzeExpenseCommand,
 } from "@aws-sdk/client-textract";
 
+import { AnalyzeExpenseFormatter } from "@sst-bill-splitter/core/format-analyze-expense";
+
 const client = new TextractClient({ region: "us-east-1" });
 
 export const handler = async (event: any) => {
@@ -17,7 +19,8 @@ export const handler = async (event: any) => {
   };
 
   const command = new AnalyzeExpenseCommand(input);
-  const response = await client.send(command);
+  const analyzeExpenseResponse = await client.send(command);
+  const response = AnalyzeExpenseFormatter(analyzeExpenseResponse);
   return {
     statusCode: 200,
     body: JSON.stringify(response),

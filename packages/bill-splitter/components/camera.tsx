@@ -27,6 +27,21 @@ const CameraComponent: React.FC = () => {
     }
   };
 
+  const handleOnAnalyzeClick = () => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const requestBody = { image: imageData };
+    console.log('imageData', imageData);
+    console.log('process.env.API_URL', process.env.NEXT_PUBLIC_API_URL)
+    fetch(apiUrl!, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: imageData//JSON.stringify(requestBody),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error));
+  }
+
   const takePicture = () => {
     if (videoRef.current && canvasRef.current) {
       const canvas = canvasRef.current;
@@ -38,7 +53,7 @@ const CameraComponent: React.FC = () => {
 
       const dataUrl = canvas.toDataURL('image/png');
       setImageData(dataUrl);
-      console.log('dataUrl', dataUrl)
+      // console.log('dataUrl', dataUrl)
       stopCamera();
       
       // Send imageData to API
@@ -50,6 +65,7 @@ const CameraComponent: React.FC = () => {
       <video ref={videoRef} autoPlay playsInline />
       <button onClick={startCamera}>Start Camera</button>
       <button onClick={takePicture}>Take Picture</button>
+      <button onClick={handleOnAnalyzeClick}>Analyze Expense</button>
       {imageData && (
         <div>
           <h2>Preview:</h2>
