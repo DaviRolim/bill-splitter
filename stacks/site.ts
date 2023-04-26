@@ -5,9 +5,9 @@ export function Site({ stack }: StackContext) {
     const api = use(API);
     const site = new NextjsSite(stack, "Site", {
       bind: [api],
-      path: "bill-splitter/",
+      path: "packages/bill-splitter/",
       environment: {
-        NEXT_PUBLIC_API_URL: api.url,
+        NEXT_PUBLIC_API_URL: api.url!,
       },
     });
   
