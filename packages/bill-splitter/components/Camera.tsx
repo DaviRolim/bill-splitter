@@ -4,8 +4,10 @@ const CameraComponent: React.FC = () => {
   const [imageData, setImageData] = useState<string | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [showCamera, setShowCamera] = useState<boolean>(false);
 
   const startCamera = () => {
+    setShowCamera(true);
     navigator.mediaDevices.getUserMedia({ video: true, audio: false })
       .then((stream) => {
         if (videoRef.current) {
@@ -29,13 +31,12 @@ const CameraComponent: React.FC = () => {
 
   const handleOnAnalyzeClick = () => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    const requestBody = { image: imageData };
     console.log('imageData', imageData);
     console.log('process.env.API_URL', process.env.NEXT_PUBLIC_API_URL)
     fetch(apiUrl!, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: imageData//JSON.stringify(requestBody),
+      body: imageData
     })
       .then((response) => response.json())
       .then((data) => console.log(data))
@@ -62,10 +63,12 @@ const CameraComponent: React.FC = () => {
 
   return (
     <div>
-      <video ref={videoRef} autoPlay playsInline />
-      <button onClick={startCamera}>Start Camera</button>
-      <button onClick={takePicture}>Take Picture</button>
-      <button onClick={handleOnAnalyzeClick}>Analyze Expense</button>
+      <video className={`${showCamera ? 'block': 'hidden'}`} ref={videoRef} autoPlay playsInline />
+      <div className="flex justify-center">
+        <button className='bg-green-400 mx-2 rounded-lg' onClick={startCamera}>Start Camera</button>
+        <button className='bg-green-400 mx-2 rounded-lg' onClick={takePicture}>Take Picture</button>
+        <button className='bg-green-400 mx-2 rounded-lg' onClick={handleOnAnalyzeClick}>Analyze Expense</button>
+      </div>
       {imageData && (
         <div>
           <h2>Preview:</h2>
