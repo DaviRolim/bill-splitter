@@ -17,10 +17,13 @@ export const handler = async (event: any) => {
       Bytes: Uint8Array.from(Buffer.from(base64Image, 'base64')),
     },
   };
+  // TODO make sure we return name (item name), price, quantity.
+
 
   const command = new AnalyzeExpenseCommand(input);
   const analyzeExpenseResponse = await client.send(command);
   const response = AnalyzeExpenseFormatter(analyzeExpenseResponse);
+  console.log('response', response);
   return {
     statusCode: 200,
     body: JSON.stringify(response),
