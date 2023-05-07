@@ -1,13 +1,12 @@
+import { useBillStore } from '@/store/billStore';
 import { useState } from 'react';
 
-type addPayerProps = {
-  onAddPayer: (name: string) => void;
-};
-const AddPayer = ({ onAddPayer }: addPayerProps) => {
+const AddPayer = () => {
   const [name, setName] = useState('');
+  const addBillParticipant = useBillStore(state => state.addBillParticipant);
 
   const handleAddPayer = () => {
-    onAddPayer(name);
+    addBillParticipant(name);
     setName('');
   };
 

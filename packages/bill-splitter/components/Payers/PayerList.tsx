@@ -1,16 +1,24 @@
-import { Payer } from '@/types/common';
+import { useBillStore } from '@/store/billStore';
+import { AnalyzedItem } from '@/types/analyzedItem';
 import React from 'react';
 import { MdDeleteForever } from 'react-icons/md';
 
-type PayerListProps = {
-  payers: Payer[];
-  onDeletePayer: (name: string) => void;
-};
-
-export default function PayerList({ payers, onDeletePayer }: PayerListProps) {
+export default function PayerList() {
+  const payers = useBillStore(state => state.billParticipants);
+  const removeBillParticipant = useBillStore(state => state.removeBillParticipant);
+  const analyzedItems = useBillStore(state => state.analyzedItems);
   const handleDeletePayer = (name: string) => {
-    onDeletePayer(name);
+    removeBillParticipant(name);
   };
+  for (const payer of payers) {
+    console.log('payer.name', payer.name);
+    console.log('payer.items', payer.items);
+  }
+  const getItemSplitValue = (item: AnalyzedItem) => {
+    const itemIndex = analyzedItems.findIndex(stateItem => item.name === stateItem.name);
+    return analyzedItems[itemIndex].price / analyzedItems[itemIndex].numberOfConsumers;
+  };
+
   return (
     <div className="block">
       {payers.length > 0 && (
@@ -20,7 +28,10 @@ export default function PayerList({ payers, onDeletePayer }: PayerListProps) {
             {payers.map(payer => (
               <div key={payer.name} className="flex justify-between mb-2">
                 <li className="text-xl">
-                  {payer.name} {payer.totalPay}
+                  {payer.name}{' '}
+                  {payer.items
+                    .reduce((acc, item) => acc + getItemSplitValue(item), 0)
+                    .toFixed(2)}
                 </li>
                 <MdDeleteForever
                   className="text-red-600"
